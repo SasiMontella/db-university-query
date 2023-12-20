@@ -1,0 +1,74 @@
+-- Selezionare cognome e nome tutti gli insegnanti, ordinati per cognome e poi per nome in ordine alfabetico (100)
+SELECT t.surname, t.name 
+FROM teachers t 
+ORDER BY t.surname ASC;
+
+SELECT t.name, t.surname 
+FROM teachers t 
+ORDER BY t.name ASC;
+
+-- Selezionare tutti gli insegnamenti (courses) che valgono almeno 12 crediti (cfu) (375)
+SELECT *
+FROM courses c 
+WHERE c.cfu >= 12;
+
+-- Selezionare tutti gli studenti nati nel 1990 (160)
+SELECT *
+FROM students s 
+WHERE YEAR (date_of_birth) = 1990;
+
+-- Selezionare tutti i corsi del primo semestre del primo anno di un qualsiasi corso di laurea (286)
+SELECT *
+FROM courses c 
+WHERE c.period ='I semestre' AND c.`year` =1;
+
+-- Da quanti dipartimenti è composta l’università?
+SELECT count(*) AS number_departments
+FROM departments d ;
+
+-- Contare tutti gli insegnanti il cui cognome termina con la “E” (8)
+SELECT count(*)
+FROM teachers t 
+WHERE t.surname LIKE '%E';
+
+-- Selezionare nome, cognome e codice fiscale di tutti gli studenti iscritti al Corso di Laurea in Economia, in ordine alfabetico
+SELECT s.name, s.surname, s.fiscal_code 
+FROM students s 
+JOIN degrees d ON s.degree_id = d.id 
+WHERE d.name = 'Corso di Laurea in Economia'
+ORDER BY s.surname ASC;
+
+-- Selezionare tutti i Corsi di Laurea Magistrale del Dipartimento di Neuroscienze
+SELECT d.name, d.head_of_department, d2.name, d2.`level` 
+FROM departments d 
+JOIN degrees d2 ON d2.department_id = d.id
+WHERE d2.`level` = 'magistrale' AND d.name = 'Dipartimento di Neuroscienze';
+
+-- BONUS
+-- Selezionare nome e cognome di tutti gli studenti che hanno superato l’esame del corso “maxime laboriosam nostrum” (39)
+SELECT *
+FROM students s 
+JOIN exam_student es ON es.student_id = s.id 
+JOIN exams e ON es.exam_id = e.id 
+JOIN courses c ON e.course_id = c.id 
+WHERE c.name = 'maxime laboriosam nostrum' AND es.vote >= 18;
+
+-- Elencare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
+SELECT *
+FROM departments d 
+JOIN degrees d2 ON d.id = d2.department_id
+JOIN courses c ON d2.id = c.degree_id 
+JOIN course_teacher ct ON c.id = ct.course_id 
+JOIN teachers t ON ct.teacher_id  = t.id
+WHERE d.name = 'Dipartimento di Matematica';
+
+
+
+
+
+
+
+
+
+
+
